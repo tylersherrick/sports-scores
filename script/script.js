@@ -1,7 +1,7 @@
 const sportsDiv = document.getElementById("sports-div");
 const mlbSection = document.getElementById("mlb-section");
 const mlbURL = 'http://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard';
-let sportsData = {  };
+let sportsData = { };
 
 const fetchData = async() => {
     try {
@@ -26,18 +26,23 @@ const mlbDisplay = () => {
         const homeTeam = event.competitions[0].competitors[0].team.displayName;
         const newElement = document.createElement("div");
         newElement.setAttribute("id", gameId);
-        newElement.setAttribute("class", "game-row")
+        newElement.setAttribute("class", "game-row");
         newElement.textContent = `Game ID: ${gameId} ${awayTeam} at ${homeTeam}`;
-        document.body.appendChild(newElement);
+        sportsDiv.append(newElement);
     });
+
     document.querySelectorAll('.game-row').forEach(element => {
         element.addEventListener('click', (event) => {
             const clickedElement = event.target;
             const gameId = clickedElement.id;
-            sportsDiv.innerHTML = '';
+            const gameName = clickedElement.textContent;            
+            sportsDiv.innerHTML = `<button id="back-button">Back</button>`;
+            sportsDiv.innerHTML += `<p>${gameName}</p>`;
+            document.getElementById('back-button').addEventListener('click', () => {
+                mlbDisplay();
+            });
         });
     });
 }
-
 
 fetchData();
