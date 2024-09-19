@@ -8,14 +8,10 @@ const fetchData = async() => {
         const res = await fetch(mlbURL);
         const data = await res.json();
         sportsData = data.events;
-        updateViews();
+        mlbDisplay();
     } catch (err) {
         console.log(err)
     }
-}
-
-const updateViews = () => {
-    mlbDisplay();
 }
 
 const mlbDisplay = () => {
@@ -38,16 +34,22 @@ const mlbDisplay = () => {
         const isThird = situation ? situation.onThird : 'N/A';
         const newElement = document.createElement("div");
         newElement.id = gameId;
-        newElement.innerHTML += `${awayTeam} ${awayScore} at ${homeTeam} ${homeScore}`;
+        newElement.innerHTML += `
+            
+            <div class="game">
+                <p>Game Status: ${gameStatus}</p> 
+                <p>${awayTeam} ${awayScore} at ${homeTeam} ${homeScore}</p>
+            </div>
+        `;
         sportsDiv.append(newElement);
 
         newElement.addEventListener('click', (e) => {
             console.log(e.target.id + ` ${awayTeam} at ${homeTeam}`); 
             sportsDiv.innerHTML = `
                 <button id="all-content">Back</button>
-                <p>${e.target.id}: </p>
+                <p>${gameId}</p>
                 <p>${awayTeam} - ${awayScore}</p>
-                <p>${homeTeam} - ${awayScore}</p>
+                <p>${homeTeam} - ${homeScore}</p>
             `;
             const backButton = document.getElementById("all-content");
         backButton.addEventListener('click', mlbDisplay)
